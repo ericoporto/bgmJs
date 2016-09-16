@@ -1,36 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="external/complex_array.js"></script>
-<script src="external/fft.js"></script>
-<script src="external/audiotob64.js"></script>
+    <script src="bgmusic.min.js"></script>
+    <script>
+    var bgmusic = []
+    var torun = function(){
 
-<script src="instruments/bass.js"></script>
-<script src="instruments/guitar.js"></script>
-<script src="instruments/kick.js"></script>
-<script src="instruments/hatClosed.js"></script>
-<script src="instruments/hatOpen.js"></script>
-<script src="instruments/snare.js"></script>
+        bgmusic = new music()
 
-<script src="bgmusic.js"></script>
-
-<script>
-var torun = function(){
-
-    bgmusic = new music()
-    // /I can play a song in songs as audio tag.
-    // bgmusic.songs[0].play() works
-    // /as does
-    // bgmusic.songs[0].pause()
-    // /and
-    // bgmusic.songs[0].currentTime = 0
-    // /works too
+        //  document.getElementById("pause").style.display = "block";
+        // /I can play a song in songs as audio tag.
+        // bgmusic.songs[0].play() works
+        // /as does
+        // bgmusic.songs[0].pause()
+        // /and
+        // bgmusic.songs[0].currentTime = 0
+        // /works too
 
 
-    }
-</script>
+        }
+    </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Js Tracker Background Music with size restriction in mind</title>
+    <link rel="stylesheet" type="text/css" href="simple.css">
 </head>
-<body onload="torun()">
 
+<body onload="torun()">
+    <header>
+        <h1>Background Music for pages with size restriction</h1>
+    </header>
+    <p>
+      Music is designed in a json file.
+    </p>
+    <section class="flat">
+    <button id="button_play" onclick="bgmusic.songs[0].play()">
+      Play
+    </button>
+    <button id="button_pause" onclick="bgmusic.songs[0].pause()">
+      Pause
+    </button>
+    </section>
 </body>
+
 </html>
