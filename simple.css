@@ -8,6 +8,10 @@ body {
     background: #EEE
 }
 
+footer {
+  font-size: 14px;
+}
+
 h1,
 h2,
 h3 {
