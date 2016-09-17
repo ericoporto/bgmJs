@@ -18,8 +18,8 @@ button {
     display: inline-block;
     font-family: serif;
     margin: 16px 16px 16px 0;
-    padding: 16px 48px;
-    font-size: 36px;
+    padding: 12px 36px;
+    font-size: 32px;
     line-height: 1.8;
     appearance: none;
     box-shadow: none;

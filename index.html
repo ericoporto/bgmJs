@@ -5,20 +5,8 @@
     <script>
     var bgmusic = []
     var torun = function(){
-
         bgmusic = new music()
-
-        //  document.getElementById("pause").style.display = "block";
-        // /I can play a song in songs as audio tag.
-        // bgmusic.songs[0].play() works
-        // /as does
-        // bgmusic.songs[0].pause()
-        // /and
-        // bgmusic.songs[0].currentTime = 0
-        // /works too
-
-
-        }
+    }
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,14 +22,16 @@
       Music is designed in a json file.
     </p>
     <section class="flat">
-    <button id="button_play" onclick="bgmusic.songs[0].play()">
-      Play
+    <button id="button_play" alt="play" onclick="bgmusic.songs[0].play()">
+      &#9654;
     </button>
-    <button id="button_pause" onclick="bgmusic.songs[0].pause()">
-      Pause
+      
+    <button id="button_pause" alt="pause" onclick="bgmusic.songs[0].pause()">
+       &#9646;&#9646; 
     </button>
-    <button id="button_pause" onclick="bgmusic.songs[0].pause();bgmusic.songs[0].currentTime = 0">
-      Stop
+      
+    <button id="button_pause" alt="stop" onclick="bgmusic.songs[0].pause();bgmusic.songs[0].currentTime = 0">
+      &#9724
     </button>
     </section>
 </body>
