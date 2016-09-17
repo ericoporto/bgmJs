@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <script src="bgmusic.min.js"></script>
     <script>
-    var bgmusic = []
-    var torun = function(){
-        bgmusic = new music()
-    }
+        var bgmusic = []
+        var torun = function() {
+            bgmusic = new music()
+        }
     </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,17 +20,24 @@
         <h1>Background Music for pages with size restriction</h1>
     </header>
     <p>
-      Music is designed in a json file.
+        Music is designed in a json file.
     </p>
-    <section class="flat">
-    <button id="button_play" alt="play" onclick="bgmusic.songs[0].play()">
-      &#9654;
-    </button>
-      
-    <button id="button_stop" alt="stop" onclick="bgmusic.songs[0].pause();bgmusic.songs[0].currentTime = 0">
-      &#9724
-    </button>
-    </section>
+    <div align="center">
+        <section class="flat">
+            <button id="button_play" alt="play" onclick="bgmusic.songs[0].play()">
+                &#9654;
+            </button>
+
+            <button id="button_stop" alt="stop" onclick="bgmusic.songs[0].pause();bgmusic.songs[0].currentTime = 0">
+                &#9724;
+            </button>
+        </section>
+
+        <br> For more info, go to the Github Repository:
+        <br>
+        <a href="https://github.com/ericoporto/bgmJs"> github.com/ericoporto/bgmJs </a>
+    </div>
+
 </body>
 
 </html>
