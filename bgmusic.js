@@ -181,7 +181,7 @@ function music(callback, songlist){
 
         var rowsperbeat = 1.25
         var bpm = songdata["tempo"]*24/songdata["speed"]/rowsperbeat
-        console.log(bpm)
+        //console.log(bpm)
         var masong = []
         //glue together the patterns
         var pattern_sequence = songdata["Songseq"]
@@ -231,10 +231,10 @@ function music(callback, songlist){
             }
         }
 
-        console.log("will try to render...")
+        //console.log("will try to render...")
 
         offaudioctx.startRendering().then(function(renderedBuffer) {
-            console.log('rendered...');
+            //console.log('rendered...');
 
             var buffer   = renderedBuffer;
             var UintWave = createWaveFileData(buffer);
@@ -244,7 +244,7 @@ function music(callback, songlist){
             songsarr[songsarr.length-1].src = "data:audio/wav;base64," + base64;
             songsarr[songsarr.length-1].loop = true
 
-            console.log('completed!');
+            //console.log('completed!');
             global_musicindex++
             if(global_musicindex < global_songlist.length){
                 makesong(songsarr, makesong, callback)
@@ -261,8 +261,6 @@ function music(callback, songlist){
     }
 
     this.songs = []
-
-    console.log(global_songlist)
 
     this.makesong(this.songs, this.makesong, callback)
 
