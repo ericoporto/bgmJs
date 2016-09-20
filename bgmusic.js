@@ -8,11 +8,11 @@ function music(callback, songlist){
       return JSON.parse(json);          // faz o parse da string e retorna objeto
     };
 
-    global_songlist = songlist
-    this.songlist = songlist
-    global_musicindex = 0
+    global_songlist = songlist;
+    this.songlist = songlist;
+    global_musicindex = 0;
 
-    var volume = 0.30
+    var volume = 0.30;
 
     var notes = {'C0':16.35 , 'C#0':17.32 , 'Db0':17.32 , 'D0':18.35 , 'D#0':19.45 , 'Eb0':19.45 ,
     'E0':20.60 , 'F0':21.83 , 'F#0':23.12 , 'Gb0':23.12 , 'G0':24.50 , 'G#0':25.96 , 'Ab0':25.96 ,
@@ -36,7 +36,7 @@ function music(callback, songlist){
     'A7':3520.00 , 'A#7':3729.31 , 'Bb7':3729.31 , 'B7':3951.07 , 'C8':4186.01 , 'C#8':4434.92 , 'Db8':4434.92 ,
     'D8':4698.64 , 'D#8':4978.03 , 'Eb8':4978.03};
 
-    var notesarr = []
+    var notesarr = [];
     for (var key in notes) {
         notesarr.push([key,notes[key]]);
     }
@@ -62,72 +62,72 @@ function music(callback, songlist){
     }
 
     function hex2byte(n) {
-        return parseInt(n,16)
+        return parseInt(n,16);
     }
 
     function instrument(srcdata, ADSRenvelope,samplerate, audioCtx ,loop) {
-        var audioCtx = audioCtx
-        var datasz = srcdata.length
-        var samplelength = datasz/4
-        var attackTime = samplelength*ADSRenvelope[0]/(samplerate*1.0)
-        var decayTime = samplelength*ADSRenvelope[1]/(samplerate*1.0)
-        var sustainAmp = ADSRenvelope[2]*1.0
-        var releaseTime = samplelength*ADSRenvelope[3]/(samplerate*1.0)
-        var sample = new Float32Array(samplelength)
+        var audioCtx = audioCtx;
+        var datasz = srcdata.length;
+        var samplelength = datasz/4;
+        var attackTime = samplelength*ADSRenvelope[0]/(samplerate*1.0);
+        var decayTime = samplelength*ADSRenvelope[1]/(samplerate*1.0);
+        var sustainAmp = ADSRenvelope[2]*1.0;
+        var releaseTime = samplelength*ADSRenvelope[3]/(samplerate*1.0);
+        var sample = new Float32Array(samplelength);
 
 
         var i = 0;
         var j = 0;
         while ( i + 4 < datasz ) {
-            var sampsound = 0
-            var temp = 0
-            sampsound = (hex2byte(srcdata[i++])<<12)
-            sampsound |= hex2byte(srcdata[i++])<<8
-            sampsound |= hex2byte(srcdata[i++])<<4
-            sampsound |= hex2byte(srcdata[i++])
+            var sampsound = 0;
+            var temp = 0;
+            sampsound = (hex2byte(srcdata[i++])<<12);
+            sampsound |= hex2byte(srcdata[i++])<<8;
+            sampsound |= hex2byte(srcdata[i++])<<4;
+            sampsound |= hex2byte(srcdata[i++]);
 
 
-            if(sampsound>32767) sampsound = sampsound-65536
-            temp = (sampsound)/32768
+            if(sampsound>32767) sampsound = sampsound-65536;
+            temp = (sampsound)/32768;
 
-            sample[j] = temp
-            j++
+            sample[j] = temp;
+            j++;
         }
 
         var loop = (typeof loop === "undefined") ? [0,samplelength-1] : loop;
 
-        var fftdata = new complex_array.ComplexArray(loop[1]-loop[0])
+        var fftdata = new complex_array.ComplexArray(loop[1]-loop[0]);
 
-        var j = 0
+        var j = 0;
         for(var k = loop[0]; k<loop[1]; k++){
-            fftdata.real[j] = sample[k]
-            fftdata.imag[j] = 0
-            j++
+            fftdata.real[j] = sample[k];
+            fftdata.imag[j] = 0;
+            j++;
         }
 
         //console.log(fftdata)
 
-        fftdata.FFT()
-        var maxv = 0
-        var maxi = 0
-        var temp = 0
+        fftdata.FFT();
+        var maxv = 0;
+        var maxi = 0;
+        var temp = 0;
         for(var i=0; i<samplelength; i++){
-            temp = fftdata.real[i]*fftdata.real[i]+fftdata.imag[i]*fftdata.imag[i]
+            temp = fftdata.real[i]*fftdata.real[i]+fftdata.imag[i]*fftdata.imag[i];
             if(maxv<temp) {
-                maxv = temp
-                maxi = i
+                maxv = temp;
+                maxi = i;
             }
         }
 
-        var fundamentalfreq = maxi*samplerate/(loop[1]-loop[0])
-        var note = closestNoteFromFreq(fundamentalfreq, notesarr)
+        var fundamentalfreq = maxi*samplerate/(loop[1]-loop[0]);
+        var note = closestNoteFromFreq(fundamentalfreq, notesarr);
 
         var envelopeNode = audioCtx.createGain();
         var gainNode = audioCtx.createGain();
 
-        gainNode.gain.value = volume
+        gainNode.gain.value = volume;
 
-        envelopeNode.connect(gainNode)
+        envelopeNode.connect(gainNode);
         gainNode.connect(audioCtx.destination);
 
         this.play = function(notetoplay, volume, timetoplay){
@@ -136,10 +136,10 @@ function music(callback, songlist){
             var source = audioCtx.createBufferSource();
             source.loop = false;
 
-            var playbackRate = notes[notetoplay]/notes[note]
+            var playbackRate = notes[notetoplay]/notes[note];
 
-            var noteplaybackRate = Math.min(Math.round(samplerate*playbackRate), 170000)
-            var noteplaybackRate = Math.max(noteplaybackRate, 8000)
+            var noteplaybackRate = Math.min(Math.round(samplerate*playbackRate), 170000);
+            var noteplaybackRate = Math.max(noteplaybackRate, 8000);
 
             //console.log(noteplaybackRate)
             //console.log(samplelength)
@@ -149,9 +149,9 @@ function music(callback, songlist){
 
 
 
-            var data = buffer.getChannelData(0)
+            var data = buffer.getChannelData(0);
             for(var i=0; i<samplelength; i++){
-                data[i]=sample[i]
+                data[i]=sample[i];
             }
 
             source.buffer = buffer; // Assign our buffer to the source node buffer
@@ -175,57 +175,57 @@ function music(callback, songlist){
 
     this.makesong = function(songsarr, makesong, callback){
 
-        var songdata =  jsonGet(global_songlist[global_musicindex])["Song"]
+        var songdata =  jsonGet(global_songlist[global_musicindex])["Song"];
 
         //var masong = songdata["Patterns"]["1"]
 
-        var rowsperbeat = 1.25
-        var bpm = songdata["tempo"]*24/songdata["speed"]/rowsperbeat
+        var rowsperbeat = 1.25;
+        var bpm = songdata["tempo"]*24/songdata["speed"]/rowsperbeat;
         //console.log(bpm)
-        var masong = []
+        var masong = [];
         //glue together the patterns
-        var pattern_sequence = songdata["Songseq"]
+        var pattern_sequence = songdata["Songseq"];
         for(var i=0; i<pattern_sequence.length; i++){
-            var patn = pattern_sequence[i]
-            var piece_song = songdata["Patterns"][patn]
+            var patn = pattern_sequence[i];
+            var piece_song = songdata["Patterns"][patn];
             for (var k=0; k<piece_song.length; k++){
                 if(typeof masong[k] === "undefined"){
-                    masong[k]=[]
+                    masong[k]=[];
                 }
-                masong[k]=masong[k].concat(piece_song[k])
+                masong[k]=masong[k].concat(piece_song[k]);
             }
         }
 
         var offaudioctx = new OfflineAudioContext(2,44100*(masong[0].length+10)/(bpm/60),44100);
 
-        var instruments = []
+        var instruments = [];
 
-        instruments[0] = new instrument(ins_guitar, [0.0, 0.6, 0.5, 0.7], 64000, offaudioctx , [31458, 32481])
-        instruments[1] = new instrument(ins_bass, [0.0, 0.6, 0.5, 0.7], 64000, offaudioctx)
-        instruments[2] = new instrument(ins_kick, [0.0, 0.6, 0.5, 0.7], 64000, offaudioctx)
-        instruments[3] = new instrument(ins_hatClosed, [0.0, 0.6, 0.5, 0.7], 64000, offaudioctx)
-        instruments[4] = new instrument(ins_hatOpen, [0.0, 0.6, 0.5, 0.7], 64000, offaudioctx)
-        instruments[5] = new instrument(ins_snare, [0.0, 0.6, 0.5, 0.7], 64000, offaudioctx)
+        instruments[0] = new instrument(ins_guitar, [0.0, 0.6, 0.5, 0.7], 64000, offaudioctx , [31458, 32481]);
+        instruments[1] = new instrument(ins_bass, [0.0, 0.6, 0.5, 0.7], 64000, offaudioctx);
+        instruments[2] = new instrument(ins_kick, [0.0, 0.6, 0.5, 0.7], 64000, offaudioctx);
+        instruments[3] = new instrument(ins_hatClosed, [0.0, 0.6, 0.5, 0.7], 64000, offaudioctx);
+        instruments[4] = new instrument(ins_hatOpen, [0.0, 0.6, 0.5, 0.7], 64000, offaudioctx);
+        instruments[5] = new instrument(ins_snare, [0.0, 0.6, 0.5, 0.7], 64000, offaudioctx);
 
 
 
 
         var now = offaudioctx.currentTime;
-        now += 0.2
+        now += 0.2;
 
         //console.log(masong)
 
         var bps = bpm/60.0
         for(var i=0; i<masong[0].length ; i++){
             for(var k=0; k<masong.length ; k++){
-                var chank = masong[k]
+                var chank = masong[k];
                 if(i in chank){
                     if(chank[i].length){
                         //console.log(chank[i])
-                        var _iinstrument = (1 in chank[i]) ? (chank[i][1]-1) : 1
-                        var _ivolume = (2 in chank[i]) ? chank[i][2] : 0.5
+                        var _iinstrument = (1 in chank[i]) ? (chank[i][1]-1) : 1;
+                        var _ivolume = (2 in chank[i]) ? chank[i][2] : 0.5;
 
-                        instruments[_iinstrument].play(chank[i][0], _ivolume, now+ i/bps)
+                        instruments[_iinstrument].play(chank[i][0], _ivolume, now+ i/bps);
                     }
                 }
             }
@@ -242,15 +242,15 @@ function music(callback, songlist){
 
             songsarr.push(document.createElement('audio'))
             songsarr[songsarr.length-1].src = "data:audio/wav;base64," + base64;
-            songsarr[songsarr.length-1].loop = true
+            songsarr[songsarr.length-1].loop = true;
 
             //console.log('completed!');
             global_musicindex++
             if(global_musicindex < global_songlist.length){
-                makesong(songsarr, makesong, callback)
+                makesong(songsarr, makesong, callback);
             } else {
                 if(typeof callback !== "undefined"){
-                    callback()
+                    callback();
                 }
             }
         }, function(err) { console.log(err) }).catch(function(err) {
@@ -258,13 +258,13 @@ function music(callback, songlist){
           // Note: The promise should reject when startRendering is called a second time on an OfflineAudioContext
       });
 
-    }
+    };
 
-    this.songs = []
+    this.songs = [];
 
-    this.makesong(this.songs, this.makesong, callback)
+    this.makesong(this.songs, this.makesong, callback);
 
-    this.selectedsong = 0
+    this.selectedsong = 0;
     this.select = function(songname){
 
        for(var i=0; i<this.songlist.length; i++){
@@ -273,17 +273,17 @@ function music(callback, songlist){
           }
        }
 
-    }
+    };
 
     this.play = function () {
         this.songs[this.selectedsong].play()
-    }
+    };
     this.pause = function () {
         this.songs[this.selectedsong].pause()
-    }
+    };
     this.stop = function () {
         this.songs[this.selectedsong].pause()
         this.songs[this.selectedsong].currentTime = 0
-    }
+    };
 
 }
