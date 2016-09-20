@@ -6,7 +6,14 @@
     <script>
         var bgmusic = []
         var torun = function() {
-            bgmusic = new music()
+            var example_callback = function(){
+                document.getElementById("button_loading").style.display = "none";
+                document.getElementById("button_play").style.display = "block";
+                document.getElementById("button_stop").style.display = "block";
+            }
+            var songlist = ["songs/song1.json", "songs/bu-on-the-dwarfs-bear.json" ]
+
+            bgmusic = new music(example_callback, songlist)
         }
     </script>
     <meta charset="utf-8">
@@ -24,11 +31,15 @@
     </p>
     <div align="center">
         <section class="flat">
-            <button id="button_play" alt="play" onclick="bgmusic.songs[0].play()">
+            <button id="button_loading" alt="play">
+                Loading...
+            </button>
+        
+            <button id="button_play" alt="play" onclick="bgmusic.play()" style="display:none;">
                 &#9654;
             </button>
 
-            <button id="button_stop" alt="stop" onclick="bgmusic.songs[0].pause();bgmusic.songs[0].currentTime = 0">
+            <button id="button_stop" alt="stop" onclick="bgmusic.stop()" style="display:none;">
                 &#9724;
             </button>
         </section>
