@@ -1,4 +1,4 @@
-function music(callback){
+function music(callback, songlist){
 
     var jsonGet = function(urlToGet) {
       var request = new XMLHttpRequest();
@@ -8,7 +8,8 @@ function music(callback){
       return JSON.parse(json);          // faz o parse da string e retorna objeto
     };
 
-    global_songlist = (jsonGet("songlist.json"))["SongList"]
+    global_songlist = songlist
+    this.songlist = songlist
     global_musicindex = 0
 
     var volume = 0.30
@@ -265,8 +266,26 @@ function music(callback){
 
     this.makesong(this.songs, this.makesong, callback)
 
+    this.selectedsong = 0
+    this.select = function(songname){
+
+       for(var i=0; i<this.songlist.length; i++){
+          if(this.songlist[i]==songname){
+              this.selectedsong = i
+          }
+       }
+
+    }
+
     this.play = function () {
-        this.songs[0].play()
+        this.songs[this.selectedsong].play()
+    }
+    this.pause = function () {
+        this.songs[this.selectedsong].pause()
+    }
+    this.stop = function () {
+        this.songs[this.selectedsong].pause()
+        this.songs[this.selectedsong].currentTime = 0
     }
 
 }
