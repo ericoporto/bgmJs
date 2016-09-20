@@ -8,8 +8,8 @@
         var torun = function() {
             var example_callback = function(){
                 document.getElementById("button_loading").style.display = "none";
-                document.getElementById("button_play").style.display = "block";
-                document.getElementById("button_stop").style.display = "block";
+                document.getElementById("button_play").style.display = "inline";
+                document.getElementById("button_stop").style.display = "inline";
             }
             var songlist = ["songs/song1.json", "songs/bu-on-the-dwarfs-bear.json" ]
 
@@ -34,7 +34,7 @@
             <button id="button_loading" alt="play">
                 Loading...
             </button>
-        
+            <p>
             <button id="button_play" alt="play" onclick="bgmusic.play()" style="display:none;">
                 &#9654;
             </button>
@@ -42,6 +42,7 @@
             <button id="button_stop" alt="stop" onclick="bgmusic.stop()" style="display:none;">
                 &#9724;
             </button>
+            </p>
         </section>
 
         <footer>
