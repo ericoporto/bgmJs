@@ -20,7 +20,9 @@ var bgmusic = []
 
 var torun = function(){
 
-    bgmusic = new music()
+    var example_callback = function(){console.log("this is the callback!")}
+
+    bgmusic = new music(example_callback)
     // /I can play a song in songs as audio tag.
     // bgmusic.songs[0].play() works
     // /as does

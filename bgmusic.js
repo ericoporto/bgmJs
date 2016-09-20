@@ -1,4 +1,4 @@
-function music(){
+function music(callback){
 
     var jsonGet = function(urlToGet) {
       var request = new XMLHttpRequest();
@@ -8,7 +8,8 @@ function music(){
       return JSON.parse(json);          // faz o parse da string e retorna objeto
     };
 
-    var songList = (jsonGet("songlist.json"))["SongList"]
+    global_songlist = (jsonGet("songlist.json"))["SongList"]
+    global_musicindex = 0
 
     var volume = 0.30
 
@@ -171,7 +172,9 @@ function music(){
     }
 
 
-    this.makesong = function(songsarr, songdata){
+    this.makesong = function(songsarr, makesong, callback){
+
+        var songdata =  jsonGet(global_songlist[global_musicindex])["Song"]
 
         //var masong = songdata["Patterns"]["1"]
 
@@ -241,6 +244,14 @@ function music(){
             songsarr[songsarr.length-1].loop = true
 
             console.log('completed!');
+            global_musicindex++
+            if(global_musicindex < global_songlist.length){
+                makesong(songsarr, makesong, callback)
+            } else {
+                if(typeof callback !== "undefined"){
+                    callback()
+                }
+            }
         }, function(err) { console.log(err) }).catch(function(err) {
           console.log('Rendering failed: ' + err);
           // Note: The promise should reject when startRendering is called a second time on an OfflineAudioContext
@@ -250,11 +261,9 @@ function music(){
 
     this.songs = []
 
-    console.log(songList)
+    console.log(global_songlist)
 
-    for(var i=0; i<songList.length ; i++){
-      this.makesong(this.songs, jsonGet(songList[i])["Song"])
-    }
+    this.makesong(this.songs, this.makesong, callback)
 
     this.play = function () {
         this.songs[0].play()
