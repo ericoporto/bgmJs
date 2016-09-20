@@ -1,3 +1,5 @@
+var global_songlist = [];
+var global_musicindex = 0;
 function music(callback, songlist){
 
     var jsonGet = function(urlToGet) {
