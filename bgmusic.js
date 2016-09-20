@@ -171,9 +171,27 @@ function music(){
     }
 
 
-    this.makesong = function(songsarr, songdata, bpm){
+    this.makesong = function(songsarr, songdata){
 
-        var masong = songdata["Patterns"]["1"]
+        //var masong = songdata["Patterns"]["1"]
+
+        var rowsperbeat = 1.25
+        var bpm = songdata["tempo"]*24/songdata["speed"]/rowsperbeat
+        console.log(bpm)
+        var masong = []
+        //glue together the patterns
+        var pattern_sequence = songdata["Songseq"]
+        for(var i=0; i<pattern_sequence.length; i++){
+            var patn = pattern_sequence[i]
+            var piece_song = songdata["Patterns"][patn]
+            for (var k=0; k<piece_song.length; k++){
+                if(typeof masong[k] === "undefined"){
+                    masong[k]=[]
+                }
+                masong[k]=masong[k].concat(piece_song[k])
+            }
+        }
+
         var offaudioctx = new OfflineAudioContext(2,44100*(masong[0].length+10)/(bpm/60),44100);
 
         var instruments = []
@@ -235,7 +253,7 @@ function music(){
     console.log(songList)
 
     for(var i=0; i<songList.length ; i++){
-      this.makesong(this.songs, jsonGet(songList[i])["Song"], 500)
+      this.makesong(this.songs, jsonGet(songList[i])["Song"])
     }
 
     this.play = function () {

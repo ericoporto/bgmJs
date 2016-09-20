@@ -997,7 +997,7 @@ strat.gen_add(Generator_Drums(s_kick=SMP_KICK,
 strat.gen_add(Generator_AmbientMelody(smp=SMP_GUITAR))
 strat.gen_add(Generator_Bass(smp=SMP_BASS))
 pats = []
-for i in xrange(1):
+for i in xrange(4):
     itf.ord_add(itf.pat_add(strat.get_pattern()))
     pats.append(strat.get_pattern().data)
 
@@ -1029,13 +1029,13 @@ for i in xrange(len(pats)):
     mypattern[str(i)] = []
     for chan_i in xrange(6):
         mypattern[str(i)].append([])
-        for block_i in xrange(32):
+        for block_i in xrange(128):
             note_to_add = pats[i][block_i][chan_i][:3]
-            if(note_to_add[0] == 253 and note_to_add[2] == 255):
+            if(note_to_add[0] == 253 or note_to_add[0] == 254 and note_to_add[2] == 255):
                 note_to_add = []
             else:
                 print(note_to_add[0])
-                note_to_add = [mynotes[note_to_add[0]],
+                note_to_add = [mynotes[note_to_add[0]+25],
                                note_to_add[1], note_to_add[2]]
 
             mypattern[str(i)][chan_i].append(note_to_add)
@@ -1043,11 +1043,17 @@ for i in xrange(len(pats)):
 
 print("Saving")
 
+songseq = []
+for i in xrange(len(itf.ordlist)):
+    songseq.append(str(itf.ordlist[i]))
+
 songjson = {
     "Song": {
-        "Songseq": ["1", "1"],
+        "Songseq": songseq,
 
-        "Patterns": mypattern
+        "Patterns": mypattern,
+        "tempo": itf.tempo,
+        "speed": itf.speed
     }
 }
 
