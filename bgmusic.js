@@ -215,13 +215,15 @@ function music(callback, songlist){
 
     this.makesong = function(that){
 
+        that.updatecompletion(that.musicindex+0.1);
         //let's get the song in json format!
         jsonGet(that.songlist[that.musicindex], that.reallymakesong, that);
+
         
     }
     
     this.reallymakesong = function(song_jsonobj, that){
-    
+   
         //this.songs is where we will store the music once it's made!
         var songsarr = that.songs
         var songdata = song_jsonobj["Song"];
@@ -274,6 +276,7 @@ function music(callback, songlist){
             }
         }
 
+        that.updatecompletion(that.musicindex+0.5);
         //console.log("will try to render...")
 
         offaudioctx.startRendering().then(function(renderedBuffer) {
