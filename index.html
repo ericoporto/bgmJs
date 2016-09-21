@@ -20,9 +20,12 @@ var bgmusic = []
 
 var torun = function(){
 
-    var example_callback = function(){console.log("this is the callback!")}
+    var example_callback = function(){console.log("this is the callback!");    console.timeEnd("music")}
     var songlist = ["songs/song1.json", "songs/bu-on-the-dwarfs-bear.json" ]
+    
+    document.addEventListener('music_loading',function(e){console.log(e.detail)})
 
+    console.time("music")
     bgmusic = new music(example_callback, songlist)
     // /I can play a song in songs as audio tag.
     // bgmusic.songs[0].play() works
