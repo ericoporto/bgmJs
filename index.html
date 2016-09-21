@@ -12,6 +12,10 @@
                 document.getElementById("button_stop").style.display = "inline";
             }
             var songlist = ["songs/song1.json", "songs/bu-on-the-dwarfs-bear.json" ]
+            
+            document.addEventListener('music_loading',function(e){
+                    document.getElementById("button_loading").innerHTML = e.detail
+                })
 
             bgmusic = new music(example_callback, songlist)
         }
