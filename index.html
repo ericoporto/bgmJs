@@ -5,14 +5,33 @@
     <script src="bgmusic.min.js"></script>
     <script>
         var bgmusic = []
+        var updatesongname = function() {
+          document.getElementById("button_songname").innerHTML = (bgmusic.songlist[bgmusic.selectedsong].split('/')[1]).split('.')[0]
+        }
+
+        var nextmusic = function(){
+          bgmusic.stop();
+          if(bgmusic.selectedsong==0){
+              bgmusic.select(1);
+          } else {
+              bgmusic.select(0);
+          }
+          bgmusic.play();
+          updatesongname();
+        }
+
         var torun = function() {
             var example_callback = function(){
                 document.getElementById("button_loading").style.display = "none";
                 document.getElementById("button_play").style.display = "inline";
                 document.getElementById("button_stop").style.display = "inline";
+                document.getElementById("button_songname").style.display = "inline";
+                document.getElementById("button_next").style.display = "inline";
+                updatesongname()
             }
-            var songlist = ["songs/song1.json", "songs/bu-on-the-dwarfs-bear.json" ]
-            
+
+            var songlist = ["songs/an-intro.json", "songs/progress.json" ]
+
             document.addEventListener('music_loading',function(e){
                     document.getElementById("button_loading").innerHTML = e.detail
                 })
@@ -36,17 +55,26 @@
     <div align="center">
         <section class="flat">
             <button id="button_loading" alt="play">
-                Loading...
+                &#9835;Loading...
             </button>
             <p>
-            <button id="button_play" alt="play" onclick="bgmusic.play()" style="display:none;">
+            <button class="small-button" id="button_play" alt="play" onclick="bgmusic.play();" style="display:none;">
                 &#9654;
             </button>
 
-            <button id="button_stop" alt="stop" onclick="bgmusic.stop()" style="display:none;">
+            <button class="small-button" id="button_stop" alt="stop" onclick="bgmusic.stop();" style="display:none;">
                 &#9724;
             </button>
+
+            <button class="small-button" id="button_songname" alt="next" style="display:none;">
+            </button>
+
+            <button class="small-button" id="button_next" alt="next" onclick="nextmusic();" style="display:none;">
+                &#9197;
+            </button>
             </p>
+
+
         </section>
 
         <footer>

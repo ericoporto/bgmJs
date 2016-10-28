@@ -21,9 +21,21 @@ h3 {
 button {
     display: inline-block;
     font-family: serif;
-    margin: 16px 16px 16px 0;
+    margin: 10px 10px 10px 0;
     padding: 12px 36px;
     font-size: 32px;
+    line-height: 1.8;
+    appearance: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.small-button {
+    display: inline-block;
+    font-family: serif;
+    margin: 4px 4px 4px 0;
+    padding: 8px 16px;
+    font-size: 20px;
     line-height: 1.8;
     appearance: none;
     box-shadow: none;
