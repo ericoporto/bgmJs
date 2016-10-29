@@ -1,7 +1,32 @@
+/** bgmJs
+* MIT License
+*
+* Copyright (c) 2016 Érico Vieira Porto
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in all
+* copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*
+*/
+
 function music(callback, songlist){
 
     this.callback = callback;
-    
+
     this.loading = {};
     this.loading.completion = "0%";
     this.updatecompletion = function(i){
@@ -19,7 +44,7 @@ function music(callback, songlist){
           }
       };
       request.open('GET', urlToGet, true);
-      request.send();                   
+      request.send();
     };
 
     this.songlist = songlist;
@@ -100,10 +125,10 @@ function music(callback, songlist){
             sample[j] = temp;
             j++;
         }
-    
+
         return sample
     };
-       
+
     function find_fundamental_freq(sample, loop, samplelength, samplerate){
         var loop = (typeof loop === "undefined") ? [0,samplelength-1] : loop;
         var fftdata = new complex_array.ComplexArray(loop[1]-loop[0]);
@@ -130,7 +155,7 @@ function music(callback, songlist){
         var fundamentalfreq = maxi*samplerate/(loop[1]-loop[0]);
         return fundamentalfreq
     }
-    
+
     function base_instrument(sample, ADSRenvelope,samplerate,loop){
         var samplelength = sample.length;
         var attackTime = samplelength*ADSRenvelope[0]/(samplerate*1.0);
@@ -150,7 +175,7 @@ function music(callback, songlist){
             releaseTime: releaseTime,
             loop: loop,
             samplerate: samplerate
-        }    
+        }
     }
 
     this.ins = []
@@ -172,7 +197,7 @@ function music(callback, songlist){
         var releaseTime = baseins.releaseTime;
         var loop = baseins.loop;
         var samplerate = baseins.samplerate;
-    
+
         var audioCtx = audioCtx;
 
         var envelopeNode = audioCtx.createGain();
@@ -211,7 +236,7 @@ function music(callback, songlist){
 
     }
 
-    
+
 
     this.makesong = function(that){
 
@@ -219,18 +244,18 @@ function music(callback, songlist){
         //let's get the song in json format!
         jsonGet(that.songlist[that.musicindex], that.reallymakesong, that);
 
-        
+
     }
-    
+
     this.reallymakesong = function(song_jsonobj, that){
-   
+
         //this.songs is where we will store the music once it's made!
         var songsarr = that.songs
         var songdata = song_jsonobj["Song"];
         var rowsperbeat = 1.25;
         var bpm = songdata["tempo"]*24/songdata["speed"]/rowsperbeat;
         var masong = [];
-        
+
         //glue together the patterns
         var pattern_sequence = songdata["Songseq"];
         for(var i=0; i<pattern_sequence.length; i++){
@@ -294,7 +319,7 @@ function music(callback, songlist){
             //I am also updating completion
             that.musicindex++;
             that.updatecompletion(that.musicindex);
-            
+
             if(that.musicindex < that.songlist.length){
                 that.makesong(that);
             } else {
@@ -337,7 +362,7 @@ function music(callback, songlist){
                 newsong = true
             }
         }
-        
+
         this.songs[this.selectedsong].play();
         return newsong
     };
@@ -348,13 +373,13 @@ function music(callback, songlist){
         this.songs[this.selectedsong].pause()
         this.songs[this.selectedsong].currentTime = 0
     };
-    
+
     this.playfromstart = function (songname) {
         if(this.play(songname)){
             this.songs[this.selectedsong].currentTime = 0
         }
-    }; 
-    
+    };
+
     this.makesong(this);
 
 }
